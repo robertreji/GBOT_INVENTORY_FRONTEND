@@ -11,23 +11,23 @@ import {
   Package,
   Barcode,
 } from 'lucide-react';
-import { Button } from '../../../../../src/components/ui/Button';
-import { Card } from '../../../../../src/components/ui/Card';
-import { Input } from '../../../../../src/components/ui/Input';
-import { Select } from '../../../../../src/components/ui/Select';
-import { Badge } from '../../../../../src/components/ui/Badge';
-import { StatusBadge } from '../../../../../src/components/common/StatusBadge';
-import { Modal } from '../../../../../src/components/ui/Modal';
-import { Skeleton } from '../../../../../src/components/ui/Skeleton';
-import { borrowsApi } from '../../../../../src/api/borrows.api';
+import { Button } from '@/src/components/ui/Button';
+import { Card } from '@/src/components/ui/Card';
+import { Input } from '@/src/components/ui/Input';
+import { Select } from '@/src/components/ui/Select';
+import { Badge } from '@/src/components/ui/Badge';
+import { StatusBadge } from '@/src/components/common/StatusBadge';
+import { Modal } from '@/src/components/ui/Modal';
+import { Skeleton } from '@/src/components/ui/Skeleton';
+import { borrowsApi } from '@/src/api/borrows.api';
 import {
   BorrowWithItemsDTO,
   BorrowItemDTO,
   ReturnItemDTO,
   ReturnType,
-} from '../../../../../src/types/borrow.types';
-import { useToast } from '../../../../../src/context/ToastContext';
-import { ApiError } from '../../../../../src/types/api.types';
+} from '@/src/types/borrow.types';
+import { useToast } from '@/src/context/ToastContext';
+import { ApiError } from '@/src/types/api.types';
 
 export default function ProcessReturnPage({
   params,
