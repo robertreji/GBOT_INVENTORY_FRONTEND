@@ -48,14 +48,14 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         {/* Scanner Viewport Simulation */}
         <div className="relative aspect-video rounded-xl bg-zinc-950 border border-zinc-800 overflow-hidden flex flex-col items-center justify-center text-center p-4">
           <div className="absolute inset-x-8 top-1/2 h-0.5 bg-rose-500/80 shadow-[0_0_8px_rgba(244,63,94,0.8)] animate-pulse" />
-          <div className="border-2 border-dashed border-sky-400/50 rounded-lg w-48 h-28 flex items-center justify-center">
+          <div className="border-2 border-dashed border-emerald-400/50 rounded-lg w-48 h-28 flex items-center justify-center">
             {isSimulating ? (
               <div className="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
                 <Check className="w-5 h-5 animate-bounce" /> Code Captured!
               </div>
             ) : (
               <div className="flex flex-col items-center gap-1 text-zinc-400 text-xs">
-                <Scan className="w-8 h-8 text-sky-400/80 animate-pulse" />
+                <Scan className="w-8 h-8 text-emerald-400/80 animate-pulse" />
                 <span>Align barcode / QR within frame</span>
               </div>
             )}

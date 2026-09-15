@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Cpu, ShoppingBag, ShieldCheck, User as UserIcon } from 'lucide-react';
+import { ShoppingBag, ShieldCheck, User as UserIcon } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 
@@ -17,14 +18,18 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-15 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-sky-600 flex items-center justify-center text-white shadow-sm shadow-sky-600/30 group-hover:scale-105 transition-transform">
-            <Cpu className="w-5 h-5" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="GBOT Logo"
+            width={36}
+            height={36}
+            className="rounded-xl group-hover:scale-105 transition-transform"
+          />
           <div className="flex flex-col">
             <span className="font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
               GBOT
             </span>
-            <span className="text-[10px] font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider">
+            <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
               GECW Lab Inventory
             </span>
           </div>
@@ -40,7 +45,7 @@ export const Header: React.FC = () => {
           >
             <ShoppingBag className="w-5 h-5" />
             {totalCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-sky-600 text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
                 {totalCount}
               </span>
             )}
@@ -90,7 +95,7 @@ export const Header: React.FC = () => {
           ) : (
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs"
             >
               <UserIcon className="w-3.5 h-3.5" />
               <span>Login</span>

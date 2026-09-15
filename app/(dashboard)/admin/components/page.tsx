@@ -111,7 +111,7 @@ export default function AdminComponentsPage() {
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                       isSticker
-                        ? 'bg-sky-50 dark:bg-sky-950/60 text-sky-600'
+                        ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600'
                         : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600'
                     }`}
                   >

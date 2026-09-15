@@ -159,13 +159,13 @@ export default function ProcessReturnPage({
                 className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="flex items-center gap-3">
-                  <Package className="w-5 h-5 text-sky-600 shrink-0" />
+                  <Package className="w-5 h-5 text-emerald-600 shrink-0" />
                   <div className="flex flex-col">
                     <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       {item.component?.name || 'Component'}
                     </span>
                     {item.componentInstanceId && (
-                      <span className="font-mono text-xs text-sky-600 dark:text-sky-400 flex items-center gap-1">
+                      <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                         <Barcode className="w-3.5 h-3.5" />
                         Instance ID: {item.componentInstanceId}
                       </span>

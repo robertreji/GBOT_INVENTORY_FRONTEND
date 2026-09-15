@@ -35,13 +35,13 @@ export const BottomNav: React.FC = () => {
               href={item.href}
               className={`flex-1 flex flex-col items-center justify-center h-full py-1 text-center transition-all ${
                 isActive
-                  ? 'text-sky-600 dark:text-sky-400 font-semibold'
+                  ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
                   : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-normal'
               }`}
             >
               <div
                 className={`relative p-1 rounded-xl transition-all ${
-                  isActive ? 'bg-sky-50 dark:bg-sky-950/60' : ''
+                  isActive ? 'bg-emerald-50 dark:bg-emerald-950/60' : ''
                 }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.75]'}`} />

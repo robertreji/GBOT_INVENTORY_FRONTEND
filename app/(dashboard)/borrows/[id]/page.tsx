@@ -138,7 +138,7 @@ export default function BorrowDetailPage({
         {/* Timeline details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 flex items-center gap-3">
-            <Calendar className="w-5 h-5 text-sky-600 shrink-0" />
+            <Calendar className="w-5 h-5 text-emerald-600 shrink-0" />
             <div className="flex flex-col">
               <span className="text-zinc-400 font-medium">Issue Date</span>
               <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
@@ -170,7 +170,7 @@ export default function BorrowDetailPage({
                 className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <Package className="w-5 h-5 text-sky-600 shrink-0" />
+                  <Package className="w-5 h-5 text-emerald-600 shrink-0" />
                   <div className="flex flex-col">
                     <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                       {item.component?.name || 'Component'}
@@ -194,7 +194,7 @@ export default function BorrowDetailPage({
       {/* Return Events */}
       <Card className="p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <RotateCcw className="w-4 h-4 text-sky-600" />
+          <RotateCcw className="w-4 h-4 text-emerald-600" />
           <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
             Return History & Logs ({returns.length})
           </h2>
@@ -244,7 +244,7 @@ export default function BorrowDetailPage({
       {/* Renewal Requests */}
       <Card className="p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <Repeat className="w-4 h-4 text-sky-600" />
+          <Repeat className="w-4 h-4 text-emerald-600" />
           <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
             Renewal Requests ({renewals.length})
           </h2>

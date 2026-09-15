@@ -228,7 +228,7 @@ function NewBorrowContent() {
                     e.target.value = '';
                   }
                 }}
-                className="flex-1 h-11 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+                className="flex-1 h-11 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm px-3 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
               >
                 <option value="" disabled>
                   -- Select hardware item to issue --
@@ -263,7 +263,7 @@ function NewBorrowContent() {
                   >
                     <div className="flex items-center gap-2.5">
                       {row.inventoryType === 'sticker_based' ? (
-                        <Barcode className="w-5 h-5 text-sky-600 shrink-0" />
+                        <Barcode className="w-5 h-5 text-emerald-600 shrink-0" />
                       ) : (
                         <Boxes className="w-5 h-5 text-emerald-600 shrink-0" />
                       )}

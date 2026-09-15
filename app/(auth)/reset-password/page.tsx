@@ -106,7 +106,7 @@ function ResetPasswordContent() {
         </Button>
 
         <div className="pt-2 text-center text-xs text-zinc-500">
-          <Link href="/login" className="font-semibold text-sky-600 hover:underline">
+          <Link href="/login" className="font-semibold text-emerald-600 hover:underline">
             Back to Sign In
           </Link>
         </div>

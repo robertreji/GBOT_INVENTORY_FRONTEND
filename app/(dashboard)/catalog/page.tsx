@@ -126,7 +126,7 @@ export default function CatalogPage() {
             onClick={() => setSelectedCategory('')}
             className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
               selectedCategory === ''
-                ? 'bg-sky-600 text-white font-semibold shadow-xs'
+                ? 'bg-emerald-600 text-white font-semibold shadow-xs'
                 : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
             }`}
           >
@@ -139,7 +139,7 @@ export default function CatalogPage() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-sky-600 text-white font-semibold shadow-xs'
+                  ? 'bg-emerald-600 text-white font-semibold shadow-xs'
                   : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
               }`}
             >
@@ -231,7 +231,7 @@ export default function CatalogPage() {
               <Link key={comp.id} href={`/catalog/${comp.id}`} className="group">
                 <Card
                   hoverable
-                  className="h-full flex flex-col justify-between p-4.5 transition-all group-hover:border-sky-400/50"
+                  className="h-full flex flex-col justify-between p-4.5 transition-all group-hover:border-emerald-400/50"
                 >
                   <div className="flex flex-col gap-2">
                     {/* Top tags */}
@@ -247,12 +247,12 @@ export default function CatalogPage() {
                           </span>
                         )}
                       </Badge>
-                      <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-sky-600 transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-zinc-400 group-hover:text-emerald-600 transition-colors" />
                     </div>
 
                     {/* Name & description */}
                     <div>
-                      <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors line-clamp-1">
+                      <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1">
                         {comp.name}
                       </h3>
                       <p className="text-xs text-zinc-500 line-clamp-2 mt-1 min-h-[2rem]">
@@ -263,7 +263,7 @@ export default function CatalogPage() {
 
                   {/* Bottom Action Tray */}
                   <div className="pt-3 mt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-medium text-sky-600 dark:text-sky-400">
+                    <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
                       View details & stock
                     </span>
                     <Button

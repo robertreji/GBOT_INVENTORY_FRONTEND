@@ -6,11 +6,11 @@ import { Cpu } from 'lucide-react';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 sm:p-6 bg-radial from-sky-50/50 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-950 dark:to-black">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 sm:p-6 bg-radial from-emerald-50/50 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-950 dark:to-black">
       {/* Brand Header */}
       <div className="flex flex-col items-center text-center mb-6">
         <Link href="/" className="flex items-center gap-2.5 mb-2 group">
-          <div className="w-12 h-12 rounded-2xl bg-sky-600 flex items-center justify-center text-white shadow-lg shadow-sky-600/30 group-hover:scale-105 transition-transform">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30 group-hover:scale-105 transition-transform">
             <Cpu className="w-7 h-7" />
           </div>
         </Link>

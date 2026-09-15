@@ -109,7 +109,7 @@ export default function ReservationsPage() {
             onClick={() => setSelectedStatus(tab.value)}
             className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
               selectedStatus === tab.value
-                ? 'bg-sky-600 text-white font-semibold shadow-xs'
+                ? 'bg-emerald-600 text-white font-semibold shadow-xs'
                 : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
             }`}
           >

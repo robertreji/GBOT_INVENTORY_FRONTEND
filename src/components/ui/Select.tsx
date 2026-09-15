@@ -28,10 +28,10 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           <select
             id={selectId}
             ref={ref}
-            className={`w-full h-11 min-h-[44px] appearance-none rounded-xl border bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm pl-3.5 pr-10 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500/20 ${
+            className={`w-full h-11 min-h-[44px] appearance-none rounded-xl border bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm pl-3.5 pr-10 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
               error
                 ? 'border-rose-500 focus:border-rose-500'
-                : 'border-zinc-200 dark:border-zinc-800 focus:border-sky-500'
+                : 'border-zinc-200 dark:border-zinc-800 focus:border-emerald-500'
             } ${className}`}
             {...props}
           >

@@ -81,7 +81,7 @@ function VerifyOtpContent() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1 text-center">
-        <div className="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 mx-auto flex items-center justify-center mb-1">
+        <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center mb-1">
           <ShieldCheck className="w-6 h-6" />
         </div>
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Verify Your Email</h2>
@@ -118,7 +118,7 @@ function VerifyOtpContent() {
               type="button"
               disabled={countdown > 0 || isResending}
               onClick={handleResend}
-              className="text-xs font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+              className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Resend OTP</span>

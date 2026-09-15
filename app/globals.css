@@ -5,13 +5,13 @@
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
-  --primary: #0284c7;
-  --primary-hover: #0369a1;
+  --primary: #059669;
+  --primary-hover: #047857;
   --primary-foreground: #ffffff;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
   --border: #e2e8f0;
-  --ring: #0284c7;
+  --ring: #059669;
   --radius: 0.75rem;
 }
 

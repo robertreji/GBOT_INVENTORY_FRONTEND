@@ -99,7 +99,7 @@ export default function BorrowsPage() {
             onClick={() => setSelectedStatus(tab.value)}
             className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
               selectedStatus === tab.value
-                ? 'bg-sky-600 text-white font-semibold shadow-xs'
+                ? 'bg-emerald-600 text-white font-semibold shadow-xs'
                 : 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100'
             }`}
           >
@@ -145,7 +145,7 @@ export default function BorrowsPage() {
                     ? 'border-l-rose-500'
                     : isUrgent
                     ? 'border-l-amber-500'
-                    : 'border-l-sky-500'
+                    : 'border-l-emerald-500'
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-zinc-100 dark:border-zinc-800/80">

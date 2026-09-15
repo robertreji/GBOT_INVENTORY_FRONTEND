@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
           <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
             Check your inbox! We sent password reset instructions to <span className="font-semibold">{email}</span>.
           </p>
-          <Link href="/login" className="mt-2 text-xs font-semibold text-sky-600 hover:underline">
+          <Link href="/login" className="mt-2 text-xs font-semibold text-emerald-600 hover:underline">
             Back to Sign In
           </Link>
         </div>

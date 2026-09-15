@@ -81,7 +81,7 @@ export default function NewReservationPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-md mx-auto text-center py-16 flex flex-col items-center gap-3">
-        <div className="w-16 h-16 rounded-3xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 flex items-center justify-center mb-1">
+        <div className="w-16 h-16 rounded-3xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center mb-1">
           <ShoppingBag className="w-8 h-8" />
         </div>
         <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Your Basket is Empty</h2>

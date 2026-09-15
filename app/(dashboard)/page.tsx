@@ -103,7 +103,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-6 max-w-5xl mx-auto">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-sky-600 via-sky-700 to-indigo-800 text-white p-6 sm:p-8 shadow-lg shadow-sky-700/10">
+      <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-emerald-600 via-emerald-700 to-indigo-800 text-white p-6 sm:p-8 shadow-lg shadow-emerald-700/10">
         <div className="relative z-10 max-w-xl flex flex-col gap-2">
           <Badge variant="primary" className="bg-white/20 text-white border-white/30 w-fit backdrop-blur-xs">
             {isAuthenticated ? `${user?.department || 'Engineering'} • Year ${user?.year || 1}` : 'GEC Wayanad'}
@@ -111,12 +111,12 @@ export default function HomePage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             {isAuthenticated ? `Welcome, ${user?.name || 'Student'}` : 'GBOT Hardware Lab'}
           </h1>
-          <p className="text-xs sm:text-sm text-sky-100/90 leading-relaxed">
+          <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
             Reserve development boards, sensors, actuators, and robotics equipment. Keep track of loans, due dates, and renewals effortlessly.
           </p>
           <div className="flex flex-wrap gap-3 mt-3">
             <Link href="/catalog">
-              <Button size="md" className="bg-white text-sky-700 hover:bg-sky-50 font-semibold shadow-xs">
+              <Button size="md" className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold shadow-xs">
                 <Layers className="w-4 h-4" />
                 <span>Browse Inventory</span>
               </Button>
@@ -138,7 +138,7 @@ export default function HomePage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <Link href="/catalog" className="group">
           <Card hoverable className="h-full flex flex-col items-center text-center p-4">
-            <div className="w-11 h-11 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
               <Layers className="w-5 h-5" />
             </div>
             <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">Components</span>
@@ -192,7 +192,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/borrows"
-            className="text-xs font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 flex items-center gap-1"
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1"
           >
             <span>View All</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -232,7 +232,7 @@ export default function HomePage() {
                       ? 'border-l-rose-500 bg-rose-50/30 dark:bg-rose-950/10'
                       : isUrgent
                       ? 'border-l-amber-500 bg-amber-50/30 dark:bg-amber-950/10'
-                      : 'border-l-sky-500'
+                      : 'border-l-emerald-500'
                   }`}
                 >
                   <div className="flex flex-col gap-1.5 flex-1">
@@ -310,7 +310,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/reservations"
-            className="text-xs font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 flex items-center gap-1"
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1"
           >
             <span>View All</span>
             <ArrowRight className="w-3.5 h-3.5" />

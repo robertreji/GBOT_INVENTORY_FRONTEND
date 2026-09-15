@@ -127,7 +127,7 @@ export default function NewComponentPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="e.g. 32-bit Renesas RA4M1 MCU, ESP32-S3 module, USB-C"
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm p-3 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm p-3 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
             />
           </div>
 
@@ -141,11 +141,11 @@ export default function NewComponentPage() {
                 onClick={() => setInventoryType('sticker_based')}
                 className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col gap-1.5 ${
                   inventoryType === 'sticker_based'
-                    ? 'border-sky-500 bg-sky-50/50 dark:bg-sky-950/30'
+                    ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30'
                     : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/40'
                 }`}
               >
-                <div className="flex items-center gap-2 text-sky-600 font-bold text-sm">
+                <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm">
                   <Barcode className="w-4 h-4" />
                   <span>Sticker / Barcode Based</span>
                 </div>

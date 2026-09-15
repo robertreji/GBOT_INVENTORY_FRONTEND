@@ -111,7 +111,7 @@ export default function LoginPage() {
           <div className="flex justify-end mt-1.5">
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-sky-600 hover:text-sky-700 dark:text-sky-400 hover:underline"
+              className="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline"
             >
               Forgot password?
             </Link>
@@ -126,7 +126,7 @@ export default function LoginPage() {
 
       <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 text-center text-xs text-zinc-500">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 hover:underline">
+        <Link href="/register" className="font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 hover:underline">
           Register with college ID
         </Link>
       </div>

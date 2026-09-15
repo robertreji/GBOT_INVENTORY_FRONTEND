@@ -98,7 +98,7 @@ export default function AdminUsersPage() {
                     className="w-11 h-11 rounded-xl object-cover"
                   />
                 ) : (
-                  <div className="w-11 h-11 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-bold flex items-center justify-center text-sm">
+                  <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center text-sm">
                     {u.name.charAt(0).toUpperCase()}
                   </div>
                 )}

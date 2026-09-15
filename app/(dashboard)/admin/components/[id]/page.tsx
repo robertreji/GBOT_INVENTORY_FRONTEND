@@ -263,7 +263,7 @@ export default function AdminComponentStockPage({
                     className="p-3.5 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-3">
-                      <Barcode className="w-5 h-5 text-sky-600 shrink-0" />
+                      <Barcode className="w-5 h-5 text-emerald-600 shrink-0" />
                       <div className="flex flex-col">
                         <span className="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {inst.stickerCode}
@@ -353,7 +353,7 @@ export default function AdminComponentStockPage({
                   available = {quantities.totalQuantity} - {inventory.reservedQuantity} (reserved) -{' '}
                   {inventory.borrowedQuantity} (borrowed) - {quantities.lostCount} (lost) -{' '}
                   {quantities.damagedCount} (damaged) ={' '}
-                  <strong className="text-sky-600 font-bold">
+                  <strong className="text-emerald-600 font-bold">
                     {Math.max(
                       0,
                       quantities.totalQuantity -

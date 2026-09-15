@@ -104,7 +104,7 @@ export default function AdminHubPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <Card className="p-4 sm:p-5 flex flex-col gap-1 border-l-4 border-l-sky-500">
+        <Card className="p-4 sm:p-5 flex flex-col gap-1 border-l-4 border-l-emerald-500">
           <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
             Active Loans
           </span>
@@ -175,7 +175,7 @@ export default function AdminHubPage() {
 
         <Link href="/admin/borrows">
           <Card hoverable className="p-4 text-center flex flex-col items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center">
               <RotateCcw className="w-5 h-5" />
             </div>
             <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">Process Returns</span>
@@ -215,7 +215,7 @@ export default function AdminHubPage() {
                 Overdue Returns
               </h2>
             </div>
-            <Link href="/admin/borrows" className="text-xs text-sky-600 hover:underline">
+            <Link href="/admin/borrows" className="text-xs text-emerald-600 hover:underline">
               View All
             </Link>
           </div>
@@ -261,7 +261,7 @@ export default function AdminHubPage() {
                 Pending Holds to Fulfill
               </h2>
             </div>
-            <Link href="/admin/reservations" className="text-xs text-sky-600 hover:underline">
+            <Link href="/admin/reservations" className="text-xs text-emerald-600 hover:underline">
               View All
             </Link>
           </div>

@@ -192,7 +192,7 @@ export default function ComponentDetailPage({
         <Card className="p-5 sm:p-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Tag className="w-4 h-4 text-sky-600" />
+              <Tag className="w-4 h-4 text-emerald-600" />
               <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                 Sticker Units ({instances.length} total)
               </h2>
@@ -225,7 +225,7 @@ export default function ComponentDetailPage({
       ) : inventory ? (
         <Card className="p-5 sm:p-6 flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <Boxes className="w-4 h-4 text-sky-600" />
+            <Boxes className="w-4 h-4 text-emerald-600" />
             <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Bulk Stock Summary
             </h2>
@@ -244,9 +244,9 @@ export default function ComponentDetailPage({
               <span className="text-[11px] text-amber-600 dark:text-amber-400 font-medium block">Reserved</span>
               <span className="text-lg font-bold text-amber-700 dark:text-amber-300">{inventory.reservedQuantity}</span>
             </div>
-            <div className="p-3 rounded-xl bg-sky-50/50 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-800/50 text-center">
-              <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium block">Borrowed</span>
-              <span className="text-lg font-bold text-sky-700 dark:text-sky-300">{inventory.borrowedQuantity}</span>
+            <div className="p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-800/50 text-center">
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium block">Borrowed</span>
+              <span className="text-lg font-bold text-emerald-700 dark:text-emerald-300">{inventory.borrowedQuantity}</span>
             </div>
             <div className="p-3 rounded-xl bg-rose-50/50 dark:bg-rose-950/30 border border-rose-100 dark:border-rose-800/50 text-center">
               <span className="text-[11px] text-rose-600 dark:text-rose-400 font-medium block">Lost / Damaged</span>

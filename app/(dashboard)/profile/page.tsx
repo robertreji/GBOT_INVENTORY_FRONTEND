@@ -140,10 +140,10 @@ export default function ProfilePage() {
             <img
               src={user.profileImg}
               alt={user.name}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-sky-500/30"
+              className="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-500/30"
             />
           ) : (
-            <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 font-bold text-2xl flex items-center justify-center border-2 border-sky-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 font-bold text-2xl flex items-center justify-center border-2 border-emerald-500/20">
               {user?.name?.charAt(0).toUpperCase() || 'S'}
             </div>
           )}
