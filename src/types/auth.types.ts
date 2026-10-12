@@ -14,6 +14,7 @@ export interface AuthResponseDTO {
 export interface RegisterPayload {
   email: string;
   password?: string;
+  admissionNumber: string;
   name: string;
   department: string;
   year: number;
@@ -22,7 +23,10 @@ export interface RegisterPayload {
 }
 
 export interface LoginPayload {
-  email: string;
+  /** Direct email login. */
+  email?: string;
+  /** Admission-number login — backend resolves the email. */
+  admissionNumber?: string;
   password?: string;
 }
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, User, Phone, GraduationCap, Calendar, UserPlus } from 'lucide-react';
+import { Mail, Lock, User, Phone, GraduationCap, Calendar, UserPlus, Hash } from 'lucide-react';
 import { Input } from '@/src/components/ui/Input';
 import { Select } from '@/src/components/ui/Select';
 import { Button } from '@/src/components/ui/Button';
@@ -18,6 +18,7 @@ export default function RegisterPage() {
 
   const [formData, setFormData] = useState({
     name: '',
+    admissionNumber: '',
     email: '',
     password: '',
     department: 'Computer Science and Engineering',
@@ -46,10 +47,13 @@ export default function RegisterPage() {
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
     if (!formData.name.trim()) errs.name = 'Full name is required';
+    if (!formData.admissionNumber.trim()) {
+      errs.admissionNumber = 'Admission number is required';
+    }
     if (!formData.email.trim()) {
-      errs.email = 'College email is required';
-    } else if (!formData.email.trim().endsWith('@gecwyd.ac.in')) {
-      errs.email = 'Only college emails (@gecwyd.ac.in) are permitted';
+      errs.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errs.email = 'A valid email address is required';
     }
     if (!formData.password) {
       errs.password = 'Password is required';
@@ -73,6 +77,7 @@ export default function RegisterPage() {
     try {
       await register({
         name: formData.name.trim(),
+        admissionNumber: formData.admissionNumber.trim().toUpperCase(),
         email: formData.email.trim(),
         password: formData.password,
         department: formData.department,
@@ -83,7 +88,7 @@ export default function RegisterPage() {
       router.push(`/verify-otp?email=${encodeURIComponent(formData.email.trim())}`);
     } catch (err) {
       if (err instanceof ApiError) {
-        if (err.validationErrors) {
+        if (err.validationErrors && Object.keys(err.validationErrors).length > 0) {
           setErrors(err.validationErrors);
         } else {
           toast.error(err.message || 'Registration failed.');
@@ -100,7 +105,7 @@ export default function RegisterPage() {
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1 text-center">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Create Student Account</h2>
-        <p className="text-xs text-zinc-500">Enter your college credentials to start borrowing components</p>
+        <p className="text-xs text-zinc-500">Enter your details to start borrowing components</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
@@ -119,9 +124,23 @@ export default function RegisterPage() {
         />
 
         <Input
-          label="College Email"
+          label="Admission Number"
+          placeholder="e.g. GEC2024CS001"
+          value={formData.admissionNumber}
+          onChange={(e) => {
+            setFormData({ ...formData, admissionNumber: e.target.value });
+            if (errors.admissionNumber) setErrors((prev) => ({ ...prev, admissionNumber: '' }));
+          }}
+          error={errors.admissionNumber}
+          leftIcon={<Hash className="w-4 h-4" />}
+          helperText="Your unique college admission number"
+          autoComplete="off"
+        />
+
+        <Input
+          label="Email Address"
           type="email"
-          placeholder="username@gecwyd.ac.in"
+          placeholder="you@example.com or username@gecwyd.ac.in"
           value={formData.email}
           onChange={(e) => {
             setFormData({ ...formData, email: e.target.value });
@@ -129,7 +148,7 @@ export default function RegisterPage() {
           }}
           error={errors.email}
           leftIcon={<Mail className="w-4 h-4" />}
-          helperText="Must be your official @gecwyd.ac.in domain"
+          helperText="College email (@gecwyd.ac.in) or any personal email"
           autoComplete="email"
         />
 
@@ -192,4 +211,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-

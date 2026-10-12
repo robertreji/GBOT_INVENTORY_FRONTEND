@@ -3,6 +3,7 @@ import { PaginationMeta } from './api.types';
 export interface UserDTO {
   id: string;
   name: string;
+  admissionNumber: string;
   department: string | null;
   year: number | null;
   email: string;

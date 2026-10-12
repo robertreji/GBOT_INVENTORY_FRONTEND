@@ -3,19 +3,23 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn, Hash } from 'lucide-react';
 import { Input } from '@/src/components/ui/Input';
 import { Button } from '@/src/components/ui/Button';
 import { useAuth } from '@/src/context/AuthContext';
 import { useToast } from '@/src/context/ToastContext';
 import { ApiError } from '@/src/types/api.types';
 
+type LoginMode = 'email' | 'admission';
+
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
   const toast = useToast();
 
+  const [loginMode, setLoginMode] = useState<LoginMode>('email');
   const [email, setEmail] = useState('');
+  const [admissionNumber, setAdmissionNumber] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,14 +27,21 @@ export default function LoginPage() {
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
-    if (!email) {
-      errs.email = 'Email is required';
-    } else if (!email.endsWith('@gecwyd.ac.in')) {
-      errs.email = 'Only college emails (@gecwyd.ac.in) are permitted';
+
+    if (loginMode === 'email') {
+      if (!email) {
+        errs.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errs.email = 'A valid email address is required';
+      }
+    } else {
+      if (!admissionNumber.trim()) {
+        errs.admissionNumber = 'Admission number is required';
+      }
     }
-    if (!password) {
-      errs.password = 'Password is required';
-    }
+
+    if (!password) errs.password = 'Password is required';
+
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -43,12 +54,16 @@ export default function LoginPage() {
     setErrors({});
 
     try {
-      await login({ email: email.trim(), password });
+      if (loginMode === 'email') {
+        await login({ email: email.trim(), password });
+      } else {
+        await login({ admissionNumber: admissionNumber.trim().toUpperCase(), password });
+      }
       toast.success('Welcome back!');
       router.push('/');
     } catch (err) {
       if (err instanceof ApiError) {
-        if (err.validationErrors) {
+        if (err.validationErrors && Object.keys(err.validationErrors).length > 0) {
           setErrors(err.validationErrors);
         } else {
           toast.error(err.message || 'Login failed. Please check your credentials.');
@@ -61,28 +76,81 @@ export default function LoginPage() {
     }
   };
 
+  const handleModeSwitch = (mode: LoginMode) => {
+    setLoginMode(mode);
+    setErrors({});
+    setEmail('');
+    setAdmissionNumber('');
+    setPassword('');
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1 text-center">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Sign in to your account</h2>
-        <p className="text-xs text-zinc-500">Access college equipment reservations & borrowed items</p>
+        <p className="text-xs text-zinc-500">Access college equipment reservations &amp; borrowed items</p>
+      </div>
+
+      {/* Login Mode Toggle */}
+      <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+        <button
+          type="button"
+          onClick={() => handleModeSwitch('email')}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-semibold transition-colors duration-200 ${
+            loginMode === 'email'
+              ? 'bg-emerald-600 text-white'
+              : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+          }`}
+        >
+          <Mail className="w-3.5 h-3.5" />
+          Email Login
+        </button>
+        <div className="w-px bg-zinc-200 dark:bg-zinc-700" />
+        <button
+          type="button"
+          onClick={() => handleModeSwitch('admission')}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-semibold transition-colors duration-200 ${
+            loginMode === 'admission'
+              ? 'bg-emerald-600 text-white'
+              : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800'
+          }`}
+        >
+          <Hash className="w-3.5 h-3.5" />
+          Admission No.
+        </button>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          label="College Email"
-          type="email"
-          placeholder="student@gecwyd.ac.in"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
-          }}
-          error={errors.email}
-          leftIcon={<Mail className="w-4 h-4" />}
-          autoComplete="email"
-          autoFocus
-        />
+        {loginMode === 'email' ? (
+          <Input
+            label="Email Address"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
+            }}
+            error={errors.email}
+            leftIcon={<Mail className="w-4 h-4" />}
+            autoComplete="email"
+            autoFocus
+          />
+        ) : (
+          <Input
+            label="Admission Number"
+            placeholder="e.g. GEC2024CS001"
+            value={admissionNumber}
+            onChange={(e) => {
+              setAdmissionNumber(e.target.value);
+              if (errors.admissionNumber) setErrors((prev) => ({ ...prev, admissionNumber: '' }));
+            }}
+            error={errors.admissionNumber}
+            leftIcon={<Hash className="w-4 h-4" />}
+            autoComplete="off"
+            autoFocus
+          />
+        )}
 
         <div>
           <Input
@@ -133,4 +201,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
