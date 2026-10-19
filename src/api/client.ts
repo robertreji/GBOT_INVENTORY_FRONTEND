@@ -59,7 +59,7 @@ const addRefreshSubscriber = (cb: (token: string | null) => void) => {
   refreshSubscribers.push(cb);
 };
 
-// Parse Zod error strings like: "email: Use your college email (@gecwyd.ac.in), password: Password must be..."
+// Parse Zod error strings like: "name: Name is required, password: Password must be at least 6 characters..."
 export const parseZodErrors = (message: string): Record<string, string> => {
   const errors: Record<string, string> = {};
   if (!message || !message.includes(':')) return errors;

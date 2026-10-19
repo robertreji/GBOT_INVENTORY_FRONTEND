@@ -11,10 +11,32 @@ export interface AuthResponseDTO {
   session: AuthSessionDTO;
 }
 
-export interface RegisterPayload {
-  email: string;
-  password?: string;
+/**
+ * Step 1 of registration: lookup the roster.
+ * Client supplies admissionNumber + mobile.
+ */
+export interface RosterLookupPayload {
   admissionNumber: string;
+  mobile: string;
+}
+
+/**
+ * Response from the roster lookup endpoint.
+ * maskedEmail is shown to the user as confirmation (e.g. "ra*****@example.com").
+ */
+export interface RosterLookupResponse {
+  maskedEmail: string;
+  name: string;
+}
+
+/**
+ * Step 2 of registration: create account.
+ * No email field — backend uses the email from the roster.
+ */
+export interface RegisterPayload {
+  admissionNumber: string;
+  mobile: string;
+  password: string;
   name: string;
   department: string;
   year: number;
@@ -30,13 +52,19 @@ export interface LoginPayload {
   password?: string;
 }
 
+/**
+ * OTP verify — uses admissionNumber, NOT email (backend resolves email from roster).
+ */
 export interface VerifyOtpPayload {
-  email: string;
+  admissionNumber: string;
   token: string;
 }
 
+/**
+ * OTP resend — uses admissionNumber, NOT email (backend resolves email from roster).
+ */
 export interface ResendOtpPayload {
-  email: string;
+  admissionNumber: string;
 }
 
 export interface RefreshTokenPayload {
@@ -51,4 +79,3 @@ export interface ResetPasswordPayload {
   accessToken: string;
   newPassword: string;
 }
-

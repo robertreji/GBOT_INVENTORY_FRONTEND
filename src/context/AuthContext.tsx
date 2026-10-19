@@ -6,8 +6,11 @@ import {
   LoginPayload,
   RegisterPayload,
   VerifyOtpPayload,
+  RosterLookupPayload,
+  RosterLookupResponse,
   AuthResponseDTO,
 } from '../types/auth.types';
+
 import { authApi } from '../api/auth.api';
 import { usersApi } from '../api/users.api';
 import {
@@ -26,10 +29,12 @@ interface AuthContextType {
   isAdmin: boolean;
   login: (payload: LoginPayload) => Promise<AuthResponseDTO>;
   register: (payload: RegisterPayload) => Promise<AuthResponseDTO>;
+  lookupRoster: (payload: RosterLookupPayload) => Promise<RosterLookupResponse>;
   verifyOtp: (payload: VerifyOtpPayload) => Promise<AuthResponseDTO>;
-  resendOtp: (email: string) => Promise<void>;
+  resendOtp: (admissionNumber: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<boolean>;
+
   updateUser: (updatedData: Partial<UserDTO>) => void;
 }
 
@@ -177,9 +182,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return data;
   }, []);
 
-  const resendOtp = useCallback(async (email: string): Promise<void> => {
-    await authApi.resendOtp({ email });
+  const lookupRoster = useCallback(async (payload: RosterLookupPayload): Promise<RosterLookupResponse> => {
+    return authApi.lookupRoster(payload);
   }, []);
+
+  const resendOtp = useCallback(async (admissionNumber: string): Promise<void> => {
+    await authApi.resendOtp({ admissionNumber });
+  }, []);
+
 
   const logout = useCallback(async (): Promise<void> => {
     setIsLoading(true);
@@ -232,6 +242,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAdmin,
         login,
         register,
+        lookupRoster,
         verifyOtp,
         resendOtp,
         logout,

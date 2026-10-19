@@ -3,6 +3,8 @@ import {
   AuthResponseDTO,
   LoginPayload,
   RegisterPayload,
+  RosterLookupPayload,
+  RosterLookupResponse,
   VerifyOtpPayload,
   ResendOtpPayload,
   ForgotPasswordPayload,
@@ -10,6 +12,22 @@ import {
 } from '../types/auth.types';
 
 export const authApi = {
+  /**
+   * Step 1 of registration: verify (admissionNumber, mobile) against the college roster.
+   * Returns a masked email so the UI can display confirmation before creating the account.
+   */
+  async lookupRoster(payload: RosterLookupPayload): Promise<RosterLookupResponse> {
+    return apiClient<RosterLookupResponse>('/auth/lookup-roster', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      skipAuth: true,
+    });
+  },
+
+  /**
+   * Step 2 of registration: create account.
+   * Backend uses the email from the roster — no email field from the client.
+   */
   async register(payload: RegisterPayload): Promise<AuthResponseDTO> {
     const data = await apiClient<AuthResponseDTO>('/auth/register', {
       method: 'POST',
@@ -36,6 +54,9 @@ export const authApi = {
     return data;
   },
 
+  /**
+   * Verify OTP — sends admissionNumber (backend resolves email from roster).
+   */
   async verifyOtp(payload: VerifyOtpPayload): Promise<AuthResponseDTO> {
     const data = await apiClient<AuthResponseDTO>('/auth/verify-otp', {
       method: 'POST',
@@ -49,6 +70,9 @@ export const authApi = {
     return data;
   },
 
+  /**
+   * Resend OTP — sends admissionNumber (backend resolves email from roster).
+   */
   async resendOtp(payload: ResendOtpPayload): Promise<{ message: string }> {
     return apiClient('/auth/resend-otp', {
       method: 'POST',
@@ -96,4 +120,3 @@ export const authApi = {
     });
   },
 };
-

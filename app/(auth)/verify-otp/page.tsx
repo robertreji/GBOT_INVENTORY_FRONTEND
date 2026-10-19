@@ -15,15 +15,17 @@ function VerifyOtpContent() {
   const { verifyOtp, resendOtp } = useAuth();
   const toast = useToast();
 
-  const [email, setEmail] = useState('');
+  // admissionNumber is passed via URL param from the register page
+  // The backend uses it to resolve the roster email — the client never knows/types the email
+  const [admissionNumber, setAdmissionNumber] = useState('');
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [countdown, setCountdown] = useState(60);
 
   useEffect(() => {
-    const qEmail = searchParams.get('email');
-    if (qEmail) setEmail(qEmail);
+    const qAdmission = searchParams.get('admissionNumber');
+    if (qAdmission) setAdmissionNumber(qAdmission);
   }, [searchParams]);
 
   useEffect(() => {
@@ -35,14 +37,14 @@ function VerifyOtpContent() {
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !token) {
-      toast.error('Please provide both email and the 6-digit OTP');
+    if (!admissionNumber || !token) {
+      toast.error('Please provide your admission number and the 6-digit OTP');
       return;
     }
 
     setIsLoading(true);
     try {
-      await verifyOtp({ email: email.trim(), token: token.trim() });
+      await verifyOtp({ admissionNumber: admissionNumber.trim().toUpperCase(), token: token.trim() });
       toast.success('Account verified successfully!');
       router.push('/');
     } catch (err) {
@@ -57,15 +59,15 @@ function VerifyOtpContent() {
   };
 
   const handleResend = async () => {
-    if (!email) {
-      toast.error('Please enter your college email');
+    if (!admissionNumber) {
+      toast.error('Admission number is missing. Please go back to registration.');
       return;
     }
 
     setIsResending(true);
     try {
-      await resendOtp(email.trim());
-      toast.success('A new verification code has been sent to your email.');
+      await resendOtp(admissionNumber.trim().toUpperCase());
+      toast.success('A new verification code has been sent to your college email.');
       setCountdown(60);
     } catch (err) {
       if (err instanceof ApiError) {
@@ -86,17 +88,19 @@ function VerifyOtpContent() {
         </div>
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Verify Your Email</h2>
         <p className="text-xs text-zinc-500">
-          Enter the verification code sent to your college inbox
+          Enter the 6-digit code sent to your college email address
         </p>
       </div>
 
       <form onSubmit={handleVerify} className="flex flex-col gap-4">
+        {/* Read-only admission number — shows which account is being verified */}
         <Input
-          label="College Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="student@gecwyd.ac.in"
+          label="Admission Number"
+          value={admissionNumber}
+          onChange={(e) => setAdmissionNumber(e.target.value)}
+          placeholder="e.g. GEC2024CS001"
+          helperText="Your OTP was sent to the college email linked to this admission number"
+          autoComplete="off"
         />
 
         <div>
@@ -142,4 +146,3 @@ export default function VerifyOtpPage() {
     </Suspense>
   );
 }
-

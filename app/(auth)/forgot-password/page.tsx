@@ -17,8 +17,8 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.endsWith('@gecwyd.ac.in')) {
-      toast.error('Please enter a valid college email address (@gecwyd.ac.in)');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      toast.error('Please enter a valid email address.');
       return;
     }
 
@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
       <div className="flex flex-col gap-1 text-center">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Reset Password</h2>
         <p className="text-xs text-zinc-500">
-          Enter your registered college email to receive a password reset link
+          Enter your registered email to receive a password reset link
         </p>
       </div>
 
@@ -62,9 +62,9 @@ export default function ForgotPasswordPage() {
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
-            label="College Email"
+            label="Email Address"
             type="email"
-            placeholder="student@gecwyd.ac.in"
+            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             leftIcon={<Mail className="w-4 h-4" />}

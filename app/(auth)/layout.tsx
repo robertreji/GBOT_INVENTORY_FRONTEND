@@ -29,7 +29,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer info */}
       <p className="mt-8 text-xs text-zinc-400 text-center">
-        Restricted to verified college members (<span className="font-mono text-zinc-500">@gecwyd.ac.in</span>)
+        Restricted to verified college members
       </p>
     </div>
   );

@@ -116,7 +116,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap gap-3 mt-3">
             <Link href="/catalog">
-              <Button size="md" className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold shadow-xs">
+              <Button size="md" className="bg-transparent text-white hover:bg-white/10 font-semibold shadow-xs">
                 <Layers className="w-4 h-4" />
                 <span>Browse Inventory</span>
               </Button>
