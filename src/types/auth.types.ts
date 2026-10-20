@@ -40,7 +40,6 @@ export interface RegisterPayload {
   name: string;
   department: string;
   year: number;
-  phoneNo: string;
   profileImg?: string | null;
 }
 

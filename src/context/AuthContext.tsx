@@ -9,6 +9,7 @@ import {
   RosterLookupPayload,
   RosterLookupResponse,
   AuthResponseDTO,
+  AuthSessionDTO,
 } from '../types/auth.types';
 
 import { authApi } from '../api/auth.api';
@@ -28,8 +29,10 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (payload: LoginPayload) => Promise<AuthResponseDTO>;
-  register: (payload: RegisterPayload) => Promise<AuthResponseDTO>;
+  register: (payload: RegisterPayload, accessToken: string) => Promise<AuthResponseDTO>;
   lookupRoster: (payload: RosterLookupPayload) => Promise<RosterLookupResponse>;
+  verifyRegistrationOtp: (payload: VerifyOtpPayload) => Promise<AuthSessionDTO>;
+  resendRegistrationOtp: (admissionNumber: string) => Promise<void>;
   verifyOtp: (payload: VerifyOtpPayload) => Promise<AuthResponseDTO>;
   resendOtp: (admissionNumber: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -156,8 +159,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return data;
   }, []);
 
-  const register = useCallback(async (payload: RegisterPayload): Promise<AuthResponseDTO> => {
-    const data = await authApi.register(payload);
+  const register = useCallback(async (payload: RegisterPayload, accessToken: string): Promise<AuthResponseDTO> => {
+    const data = await authApi.register(payload, accessToken);
     if (data.session?.accessToken) {
       setAccessToken(data.session.accessToken);
       setRefreshToken(data.session.refreshToken);
@@ -184,6 +187,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const lookupRoster = useCallback(async (payload: RosterLookupPayload): Promise<RosterLookupResponse> => {
     return authApi.lookupRoster(payload);
+  }, []);
+
+  const verifyRegistrationOtp = useCallback(async (payload: VerifyOtpPayload): Promise<AuthSessionDTO> => {
+    return authApi.verifyRegistrationOtp(payload);
+  }, []);
+
+  const resendRegistrationOtp = useCallback(async (admissionNumber: string): Promise<void> => {
+    await authApi.resendRegistrationOtp({ admissionNumber });
   }, []);
 
   const resendOtp = useCallback(async (admissionNumber: string): Promise<void> => {
@@ -243,6 +254,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         register,
         lookupRoster,
+        verifyRegistrationOtp,
+        resendRegistrationOtp,
         verifyOtp,
         resendOtp,
         logout,
