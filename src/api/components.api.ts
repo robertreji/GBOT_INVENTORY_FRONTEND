@@ -20,6 +20,14 @@ export interface ComponentFilterParams {
 }
 
 export const componentsApi = {
+  async uploadImage(file: File): Promise<{ imageUrl: string }> {
+    return apiClient<{ imageUrl: string }>("/components/images", {
+      method: "POST",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+  },
+
   async listComponents(params: ComponentFilterParams = {}): Promise<PaginatedComponentsResponse> {
     const query = new URLSearchParams();
     if (params.page) query.set('page', params.page.toString());

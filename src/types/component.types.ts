@@ -2,13 +2,14 @@ import { PaginationMeta } from './api.types';
 import { CategoryDTO } from './category.types';
 
 export type InventoryType = 'sticker_based' | 'quantity_based';
-export type ConditionStatus = 'working' | 'not_working' | 'under_repair';
+export type ConditionStatus = 'working' | 'borrowed' | 'not_working' | 'under_repair';
 
 export interface ComponentDTO {
   id: string;
   name: string;
   categoryId: string;
   description: string | null;
+  imageUrl: string | null;
   inventoryType: InventoryType;
   createdAt: string;
   updatedAt: string;
@@ -36,6 +37,7 @@ export interface CreateComponentPayload {
   name: string;
   categoryId: string;
   description?: string | null;
+  imageUrl?: string | null;
   inventoryType: InventoryType;
   totalQuantity?: number; // Only for quantity_based
 }
@@ -44,6 +46,7 @@ export interface UpdateComponentPayload {
   name?: string;
   categoryId?: string;
   description?: string | null;
+  imageUrl?: string | null;
 }
 
 export interface CreateInstancePayload {

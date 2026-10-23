@@ -44,7 +44,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Helper to decode JWT payload safely
-function parseJwtPayload(token: string): any {
+function parseJwtPayload(token: string): { app_metadata?: { role?: string } } | null {
   try {
     const base64Url = token.split('.')[1];
     if (!base64Url) return null;
@@ -55,7 +55,7 @@ function parseJwtPayload(token: string): any {
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
-    return JSON.parse(jsonPayload);
+    return JSON.parse(jsonPayload) as { app_metadata?: { role?: string } };
   } catch {
     return null;
   }
@@ -83,26 +83,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Derive admin status from token app_metadata or user role
-  const checkIsAdmin = (tok: string | null, usr: UserDTO | null): boolean => {
-    if (usr?.role === 'admin' || (usr as any)?.user_role === 'admin') return true;
+  // Derive admin status from the server-controlled token app_metadata claim.
+  const checkIsAdmin = (tok: string | null): boolean => {
+    // Profile data is cached in localStorage and user_metadata is user-editable.
+    // Only the server-controlled app_metadata claim can identify an admin.
     if (tok) {
       const payload = parseJwtPayload(tok);
-      if (
-        payload?.app_metadata?.role === 'admin' ||
-        payload?.app_metadata?.user_role === 'admin' ||
-        payload?.user_metadata?.role === 'admin' ||
-        payload?.user_metadata?.user_role === 'admin' ||
-        payload?.role === 'admin' ||
-        payload?.user_role === 'admin'
-      ) {
-        return true;
-      }
+      return payload?.app_metadata?.role === 'admin';
     }
     return false;
   };
 
-  const isAdmin = checkIsAdmin(token, user);
+  const isAdmin = checkIsAdmin(token);
 
   // Initialize session on mount
   useEffect(() => {
@@ -127,7 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const profile = await usersApi.getMe();
           if (isMounted) saveUser(profile);
         }
-      } catch (err) {
+      } catch {
         // If refresh failed but we already had an access token, don't immediately wipe if valid
         if (isMounted && !getAccessToken()) {
           clearTokens();

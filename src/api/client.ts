@@ -5,8 +5,7 @@ const API_BASE_URL =
 
 // In-memory token storage
 let inMemoryAccessToken: string | null = null;
-let isRefreshing = false;
-let refreshSubscribers: ((token: string | null) => void)[] = [];
+let refreshPromise: Promise<string | null> | null = null;
 
 export const getAccessToken = (): string | null => {
   if (inMemoryAccessToken) return inMemoryAccessToken;
@@ -50,13 +49,42 @@ export const clearTokens = (): void => {
   }
 };
 
-const onRefreshed = (token: string | null) => {
-  refreshSubscribers.forEach((cb) => cb(token));
-  refreshSubscribers = [];
-};
+/** Coalesces concurrent 401 responses into one token refresh request. */
+const refreshAccessToken = (): Promise<string | null> => {
+  if (refreshPromise) return refreshPromise;
 
-const addRefreshSubscriber = (cb: (token: string | null) => void) => {
-  refreshSubscribers.push(cb);
+  const refreshToken = getRefreshToken();
+  if (!refreshToken) return Promise.resolve(null);
+
+  refreshPromise = (async () => {
+    try {
+      const refreshRes = await fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      });
+      const refreshData = await refreshRes.json();
+      const newToken = refreshData.success ? refreshData.data?.accessToken : null;
+
+      if (typeof newToken === 'string' && newToken.length > 0) {
+        setAccessToken(newToken);
+        if (typeof refreshData.data?.refreshToken === 'string') {
+          setRefreshToken(refreshData.data.refreshToken);
+        }
+        return newToken;
+      }
+
+      clearTokens();
+      return null;
+    } catch {
+      clearTokens();
+      return null;
+    }
+  })().finally(() => {
+    refreshPromise = null;
+  });
+
+  return refreshPromise;
 };
 
 // Parse Zod error strings like: "name: Name is required, password: Password must be at least 6 characters..."
@@ -82,7 +110,7 @@ interface RequestOptions extends RequestInit {
   skipAuth?: boolean;
 }
 
-export async function apiClient<T = any>(
+export async function apiClient<T = unknown>(
   endpoint: string,
   options: RequestOptions = {}
 ): Promise<T> {
@@ -106,50 +134,15 @@ export async function apiClient<T = any>(
     headers,
   });
 
-  // Handle 401 Token Expired & Silent Refresh
+  // Handle expired access tokens. Concurrent requests share one refresh promise.
   if (response.status === 401 && !options.skipAuth && endpoint !== '/auth/refresh' && endpoint !== '/auth/login') {
-    const refreshToken = getRefreshToken();
-    if (refreshToken) {
-      if (!isRefreshing) {
-        isRefreshing = true;
-        try {
-          const refreshRes = await fetch(`${API_BASE_URL}/auth/refresh`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken }),
-          });
-
-          const refreshData = await refreshRes.json();
-          if (refreshData.success && refreshData.data?.accessToken) {
-            setAccessToken(refreshData.data.accessToken);
-            if (refreshData.data.refreshToken) {
-              setRefreshToken(refreshData.data.refreshToken);
-            }
-            onRefreshed(refreshData.data.accessToken);
-          } else {
-            clearTokens();
-            onRefreshed(null);
-          }
-        } catch {
-          clearTokens();
-          onRefreshed(null);
-        } finally {
-          isRefreshing = false;
-        }
-      }
-
-      // Wait for refresh to complete
-      const newToken = await new Promise<string | null>((resolve) => {
-        addRefreshSubscriber((t) => resolve(t));
+    const newToken = await refreshAccessToken();
+    if (newToken) {
+      headers.set('Authorization', `Bearer ${newToken}`);
+      response = await fetch(url, {
+        ...options,
+        headers,
       });
-
-      if (newToken) {
-        headers.set('Authorization', `Bearer ${newToken}`);
-        response = await fetch(url, {
-          ...options,
-          headers,
-        });
-      }
     }
   }
 
@@ -161,7 +154,7 @@ export async function apiClient<T = any>(
   let data: ApiResponse<T>;
   try {
     data = await response.json();
-  } catch (err) {
+  } catch {
     throw new ApiError(
       response.status,
       response.statusText || 'An unexpected network error occurred'

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import {
+  Package,
   Search,
   Filter,
   Layers,
@@ -233,6 +234,18 @@ export default function CatalogPage() {
                   hoverable
                   className="h-full flex flex-col justify-between p-4.5 transition-all group-hover:border-emerald-400/50"
                 >
+                  {comp.imageUrl ? (
+                    <img
+                      src={comp.imageUrl}
+                      alt={comp.name}
+                      loading="lazy"
+                      className="w-full h-44 object-cover rounded-xl mb-4"
+                    />
+                  ) : (
+                    <div className="w-full h-28 rounded-xl mb-4 bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center text-emerald-600">
+                      <Package className="w-9 h-9 stroke-1" />
+                    </div>
+                  )}
                   <div className="flex flex-col gap-2">
                     {/* Top tags */}
                     <div className="flex items-center justify-between gap-2">

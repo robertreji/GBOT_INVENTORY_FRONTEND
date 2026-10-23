@@ -11,6 +11,7 @@ import {
   Trash2,
   Edit,
   ExternalLink,
+  Upload,
 } from 'lucide-react';
 import { Button } from '@/src/components/ui/Button';
 import { Card } from '@/src/components/ui/Card';
@@ -73,11 +74,18 @@ export default function AdminComponentsPage() {
           </p>
         </div>
 
-        <Link href="/admin/components/new">
-          <Button size="sm" variant="primary" leftIcon={<Plus className="w-4 h-4" />}>
-            Create Component
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/admin/components/import">
+            <Button size="sm" variant="secondary" leftIcon={<Upload className="w-4 h-4" />}>
+              Upload List
+            </Button>
+          </Link>
+          <Link href="/admin/components/new">
+            <Button size="sm" variant="primary" leftIcon={<Plus className="w-4 h-4" />}>
+              Create Component
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <Input
@@ -108,7 +116,13 @@ export default function AdminComponentsPage() {
                 className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="flex items-start gap-3.5">
-                  <div
+                  {comp.imageUrl ? (
+                    <img
+                      src={comp.imageUrl}
+                      alt={comp.name}
+                      className="w-16 h-16 rounded-xl object-cover shrink-0"
+                    />
+                  ) : <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                       isSticker
                         ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600'
@@ -116,7 +130,7 @@ export default function AdminComponentsPage() {
                     }`}
                   >
                     {isSticker ? <Barcode className="w-5 h-5" /> : <Boxes className="w-5 h-5" />}
-                  </div>
+                  </div>}
 
                   <div className="flex flex-col gap-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">

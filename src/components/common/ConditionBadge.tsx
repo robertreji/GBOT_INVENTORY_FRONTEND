@@ -13,6 +13,8 @@ export const ConditionBadge: React.FC<ConditionBadgeProps> = ({ condition, size 
   switch (condition) {
     case 'working':
       return <Badge variant="success" size={size}>Working</Badge>;
+    case 'borrowed':
+      return <Badge variant="info" size={size}>Checked Out</Badge>;
     case 'under_repair':
       return <Badge variant="warning" size={size}>Under Repair</Badge>;
     case 'not_working':

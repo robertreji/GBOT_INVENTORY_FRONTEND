@@ -114,6 +114,13 @@ export default function ComponentDetailPage({
 
       {/* Main Info Card */}
       <Card className="p-6 sm:p-8 flex flex-col gap-5">
+        {component.imageUrl && (
+          <img
+            src={component.imageUrl}
+            alt={component.name}
+            className="w-full max-h-[28rem] rounded-xl object-contain bg-zinc-50 dark:bg-zinc-900"
+          />
+        )}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">

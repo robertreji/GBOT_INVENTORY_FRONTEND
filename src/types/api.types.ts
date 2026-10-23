@@ -1,4 +1,4 @@
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
@@ -13,7 +13,7 @@ export interface PaginationMeta {
 export interface PaginatedData<T> {
   items?: T[];
   pagination: PaginationMeta;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export class ApiError extends Error {

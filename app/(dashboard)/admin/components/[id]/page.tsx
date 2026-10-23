@@ -179,6 +179,7 @@ export default function AdminComponentStockPage({
 
       {/* Component Header Card */}
       <Card className="p-6 flex flex-col gap-2">
+        {component.imageUrl && <img src={component.imageUrl} alt={component.name} className="w-full max-h-72 rounded-xl object-contain bg-zinc-50 dark:bg-zinc-900 mb-3" />}
         <div className="flex items-center gap-2">
           <Badge variant="neutral" size="sm">
             {isSticker ? 'Sticker Based' : 'Quantity Based'}
