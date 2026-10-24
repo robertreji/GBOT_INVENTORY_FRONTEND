@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Package,
@@ -33,9 +33,35 @@ export default function CatalogPage() {
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
+  const [sortBy, setSortBy] = useState<'newest' | 'category' | 'name'>('newest');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [componentsError, setComponentsError] = useState<string | null>(null);
+  const [categoriesError, setCategoriesError] = useState<string | null>(null);
+  const [componentsRetry, setComponentsRetry] = useState(0);
+  const [categoriesRetry, setCategoriesRetry] = useState(0);
+
+  const categoryNames = useMemo(
+    () => new Map(categories.map((category) => [category.id, category.name])),
+    [categories]
+  );
+  const sortedComponents = useMemo(() => {
+    const result = [...components];
+    if (sortBy === 'category') {
+      result.sort((a, b) => {
+        const categoryOrder = (categoryNames.get(a.categoryId) ?? '').localeCompare(
+          categoryNames.get(b.categoryId) ?? '',
+          undefined,
+          { sensitivity: 'base' }
+        );
+        return categoryOrder || a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+      });
+    } else if (sortBy === 'name') {
+      result.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+    }
+    return result;
+  }, [components, categoryNames, sortBy]);
 
   // Debounce search query
   useEffect(() => {
@@ -45,41 +71,76 @@ export default function CatalogPage() {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  // Load categories on mount
+  // Load categories on mount and allow retry if the category service is unavailable.
   useEffect(() => {
+    let isCurrent = true;
+
     async function loadCategories() {
       try {
         const cats = await categoriesApi.listCategories();
-        if (cats) setCategories(cats);
-      } catch {
-        // Fallback
+        if (!isCurrent) return;
+        setCategories([...(cats ?? [])].sort((a, b) =>
+          a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+        ));
+        setCategoriesError(null);
+      } catch (error) {
+        if (!isCurrent) return;
+        setCategories([]);
+        setCategoriesError(
+          error instanceof Error ? error.message : 'Could not load categories.'
+        );
       }
     }
-    loadCategories();
-  }, []);
 
-  const loadComponents = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const res = await componentsApi.listComponents({
-        categoryId: selectedCategory || undefined,
-        inventoryType: (selectedType as InventoryType) || undefined,
-        search: debouncedSearch || undefined,
-        limit: 50,
-      });
-      if (res?.components) {
-        setComponents(res.components);
-      }
-    } catch {
-      // Fallback
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedCategory, selectedType, debouncedSearch]);
+    void loadCategories();
+    return () => {
+      isCurrent = false;
+    };
+  }, [categoriesRetry]);
 
+  // Ignore stale responses when the user changes filters before a request finishes.
   useEffect(() => {
-    loadComponents();
-  }, [loadComponents]);
+    let isCurrent = true;
+
+    async function loadComponents() {
+      setIsLoading(true);
+      setComponentsError(null);
+      try {
+        const filters = {
+          categoryId: selectedCategory || undefined,
+          inventoryType: (selectedType as InventoryType) || undefined,
+          search: debouncedSearch || undefined,
+          limit: 100,
+        };
+        const firstPage = await componentsApi.listComponents({ ...filters, page: 1 });
+        const totalPages = Math.ceil(
+          (firstPage.pagination?.total ?? firstPage.components.length) / filters.limit
+        );
+        const remainingPages = await Promise.all(
+          Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) =>
+            componentsApi.listComponents({ ...filters, page: index + 2 })
+          )
+        );
+        if (!isCurrent) return;
+        setComponents(
+          [firstPage, ...remainingPages].flatMap((page) => page.components ?? [])
+        );
+      } catch (error) {
+        if (!isCurrent) return;
+        setComponents([]);
+        setComponentsError(
+          error instanceof Error ? error.message : 'Could not load components.'
+        );
+      } finally {
+        if (isCurrent) setIsLoading(false);
+      }
+    }
+
+    void loadComponents();
+    return () => {
+      isCurrent = false;
+    };
+  }, [selectedCategory, selectedType, debouncedSearch, componentsRetry]);
 
   const handleAddToCart = (comp: ComponentDTO, e: React.MouseEvent) => {
     e.preventDefault();
@@ -148,6 +209,18 @@ export default function CatalogPage() {
             </button>
           ))}
         </div>
+        {categoriesError && (
+          <div role="alert" className="flex items-center gap-2 text-xs text-rose-600 dark:text-rose-400">
+            <span>Categories could not be loaded: {categoriesError}</span>
+            <button
+              type="button"
+              onClick={() => setCategoriesRetry((attempt) => attempt + 1)}
+              className="font-semibold underline underline-offset-2"
+            >
+              Retry
+            </button>
+          </div>
+        )}
 
         {/* Inventory Type Toggle */}
         <div className="flex items-center gap-2 text-xs">
@@ -190,6 +263,20 @@ export default function CatalogPage() {
             <span>Bulk Stock</span>
           </button>
         </div>
+
+        <label className="flex items-center gap-2 text-xs text-zinc-500">
+          <span>Sort by:</span>
+          <select
+            aria-label="Sort components"
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value as 'newest' | 'category' | 'name')}
+            className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-700 outline-none focus:border-emerald-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+          >
+            <option value="newest">Newest</option>
+            <option value="category">Category A–Z</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </label>
       </div>
 
       {/* Components Grid */}
@@ -199,7 +286,18 @@ export default function CatalogPage() {
             <Skeleton key={n} className="h-44 w-full rounded-2xl" />
           ))}
         </div>
-      ) : components.length === 0 ? (
+      ) : componentsError ? (
+        <Card role="alert" className="p-12 text-center flex flex-col items-center justify-center gap-3 border-dashed">
+          <Layers className="w-10 h-10 text-rose-400 stroke-1" />
+          <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            Could not load components
+          </h3>
+          <p className="text-xs text-zinc-500 max-w-sm">{componentsError}</p>
+          <Button size="sm" variant="outline" onClick={() => setComponentsRetry((attempt) => attempt + 1)}>
+            Retry
+          </Button>
+        </Card>
+      ) : sortedComponents.length === 0 ? (
         <Card className="p-12 text-center flex flex-col items-center justify-center gap-3 border-dashed">
           <Layers className="w-10 h-10 text-zinc-400 stroke-1" />
           <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
@@ -224,7 +322,7 @@ export default function CatalogPage() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {components.map((comp) => {
+          {sortedComponents.map((comp) => {
             const inCart = isInCart(comp.id);
             const isSticker = comp.inventoryType === 'sticker_based';
 
@@ -268,6 +366,9 @@ export default function CatalogPage() {
                       <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1">
                         {comp.name}
                       </h3>
+                      <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-400 mt-0.5">
+                        {categoryNames.get(comp.categoryId) ?? 'Uncategorized'}
+                      </p>
                       <p className="text-xs text-zinc-500 line-clamp-2 mt-1 min-h-[2rem]">
                         {comp.description || 'No description available for this component.'}
                       </p>
